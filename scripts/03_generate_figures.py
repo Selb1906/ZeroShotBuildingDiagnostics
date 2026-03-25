@@ -93,7 +93,7 @@ def fig5_scatter(cbecs):
     ax.set_xlim(-5, 105)
     ax.set_ylim(-5, 105)
     ax.legend(loc='lower right', framealpha=0.9, markerscale=1.5)
-    ax.set_title('Figure 5. EUI Score vs. Pattern Score (n=583 CBECS-mapped buildings)')
+    ax.set_title('EUI Score vs. Pattern Score (n=583 CBECS-mapped buildings)')
 
     save_fig(fig, 'fig2_scatter')
     plt.close(fig)
@@ -297,65 +297,51 @@ def fig3_cv_cvrmse_regression(df, cbecs):
     plt.close(fig)
 
 
-# ── Figure 4: Best-practice buildings — Actual vs Model-Expected ─────
-PROFILES_CSV = 'results/best_practice_hourly_profiles.csv'
+# ── Figure 4: Best-practice buildings — Hourly residual patterns ─────
+HOURLY_CSV = 'results/best_practice_hourly_residuals.csv'
 
-REPRESENTATIVE_BUILDINGS = {
-    'Peak Suppression': 'Fox_assembly_Boyce',
-    'Delayed Morning Start': 'Fox_assembly_Bradley',
-    'Evening/Overnight Shutdown': 'Rat_office_Avis',
+PATTERNS = {
+    'Peak Suppression': ['Panther_office_Danica', 'Panther_education_Scarlett', 'Fox_assembly_Boyce'],
+    'Delayed Morning Start': ['Bear_assembly_Beatrice', 'Panther_education_Janis', 'Fox_assembly_Bradley'],
+    'Evening/Overnight Shutdown': ['Panther_office_Brent', 'Rat_office_Avis', 'Bear_education_Derek'],
 }
 
 
 def fig4_hourly_patterns():
-    if not os.path.exists(PROFILES_CSV):
-        print(f'  Skipping fig4: {PROFILES_CSV} not found')
-        print(f'  Generate it with: python scripts/05_analyze_hourly_patterns.py')
+    if not os.path.exists(HOURLY_CSV):
+        print(f'  Skipping fig4: {HOURLY_CSV} not found')
         return
 
-    profiles = pd.read_csv(PROFILES_CSV)
-    print(f'  Fig4 source: {PROFILES_CSV}')
+    hourly_data = pd.read_csv(HOURLY_CSV)
+    print(f'  Fig4 source: {HOURLY_CSV}')
 
-    fig, axes = plt.subplots(1, 3, figsize=(FIG_WIDTH_DOUBLE, 3.5))
+    fig, axes = plt.subplots(1, 3, figsize=(FIG_WIDTH_DOUBLE, 3.2), sharey=True)
+    pattern_colors = ['#2563EB', '#059669', '#DC2626']
 
-    for ax, (pattern_name, bid) in zip(axes, REPRESENTATIVE_BUILDINGS.items()):
-        bdata = profiles[profiles['building'] == bid].sort_values('hour')
-        if len(bdata) == 0:
-            continue
+    for ax, (pattern_name, buildings), pcolor in zip(axes, PATTERNS.items(), pattern_colors):
+        for bid in buildings:
+            bdata = hourly_data[hourly_data['building'] == bid]
+            if len(bdata) == 0:
+                continue
+            short_name = bid.split('_')[-1]
+            ax.plot(bdata['hour'], bdata['mean_residual_kwh'], alpha=0.7, linewidth=1.2, label=short_name)
 
-        actual = bdata['mean_actual_kwh'].values
-        predicted = bdata['mean_predicted_kwh'].values
-        hours = bdata['hour'].values
-
-        # Fill savings area
-        ax.fill_between(hours, actual, predicted,
-                        where=(actual < predicted), alpha=0.15, color='#2563EB',
-                        label='Savings (actual < predicted)')
-        ax.plot(hours, actual, color='#2563EB', linewidth=1.5, label='Actual')
-        ax.plot(hours, predicted, color='#DC2626', linewidth=1.5,
-                linestyle='--', label='Model predicted')
-
-        short = bid.split('_')[-1]
-        bt = bid.split('_')[1].capitalize()
+        ax.axhline(y=0, color='gray', linewidth=0.5, linestyle='-')
         ax.set_title(pattern_name, fontsize=7, fontweight='bold')
-        ax.set_xlabel(f'Hour of Day\n({short}, {bt})', fontsize=7)
+        ax.set_xlabel('Hour of Day', fontsize=7)
         ax.set_xticks([0, 6, 12, 18, 23])
+        ax.legend(fontsize=5.5, loc='lower left')
 
-        # Highlight pattern zone
         if 'Peak' in pattern_name:
-            ax.axvspan(9, 16, alpha=0.06, color='blue')
+            ax.axvspan(9, 16, alpha=0.08, color=pcolor)
         elif 'Morning' in pattern_name:
-            ax.axvspan(7, 10, alpha=0.06, color='green')
+            ax.axvspan(7, 10, alpha=0.08, color=pcolor)
         else:
-            ax.axvspan(19, 23, alpha=0.06, color='red')
-            ax.axvspan(0, 6, alpha=0.04, color='red')
+            ax.axvspan(19, 23, alpha=0.08, color=pcolor)
+            ax.axvspan(0, 6, alpha=0.05, color=pcolor)
 
-        if ax == axes[0]:
-            ax.legend(fontsize=5.5, loc='upper left')
-
-    axes[0].set_ylabel('Mean Hourly Load (kWh)', fontsize=7)
-    fig.suptitle('Best-Practice Buildings: Actual vs. Model-Expected Consumption',
-                 fontsize=9, y=1.02)
+    axes[0].set_ylabel('Mean Residual\n(actual - predicted, kWh)', fontsize=7)
+    fig.suptitle('Hourly Residual Patterns of Best-Practice Buildings', fontsize=9, y=1.02)
     fig.tight_layout()
 
     save_fig(fig, 'fig4_hourly_patterns')
