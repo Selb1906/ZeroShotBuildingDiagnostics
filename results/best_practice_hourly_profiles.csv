@@ -1,0 +1,73 @@
+building,pattern,hour,mean_actual_kwh,mean_predicted_kwh
+Fox_assembly_Boyce,Peak Suppression,0,289.052,289.4153
+Fox_assembly_Boyce,Peak Suppression,1,285.33,287.6965
+Fox_assembly_Boyce,Peak Suppression,2,281.7837,289.5241
+Fox_assembly_Boyce,Peak Suppression,3,278.7653,289.1778
+Fox_assembly_Boyce,Peak Suppression,4,284.7469,294.3182
+Fox_assembly_Boyce,Peak Suppression,5,324.4577,331.316
+Fox_assembly_Boyce,Peak Suppression,6,330.1841,338.4475
+Fox_assembly_Boyce,Peak Suppression,7,332.4471,342.3238
+Fox_assembly_Boyce,Peak Suppression,8,342.0938,352.5214
+Fox_assembly_Boyce,Peak Suppression,9,359.7419,369.2251
+Fox_assembly_Boyce,Peak Suppression,10,374.9521,384.0973
+Fox_assembly_Boyce,Peak Suppression,11,384.5025,394.1362
+Fox_assembly_Boyce,Peak Suppression,12,391.0878,401.7025
+Fox_assembly_Boyce,Peak Suppression,13,398.5875,409.2596
+Fox_assembly_Boyce,Peak Suppression,14,402.8534,414.7969
+Fox_assembly_Boyce,Peak Suppression,15,401.5764,414.419
+Fox_assembly_Boyce,Peak Suppression,16,392.3276,405.1793
+Fox_assembly_Boyce,Peak Suppression,17,379.9692,390.4827
+Fox_assembly_Boyce,Peak Suppression,18,365.3976,374.9829
+Fox_assembly_Boyce,Peak Suppression,19,361.8008,371.3169
+Fox_assembly_Boyce,Peak Suppression,20,361.2567,369.8248
+Fox_assembly_Boyce,Peak Suppression,21,351.7617,360.1335
+Fox_assembly_Boyce,Peak Suppression,22,325.2429,336.1153
+Fox_assembly_Boyce,Peak Suppression,23,300.838,313.0628
+Fox_assembly_Bradley,Delayed Morning Start,0,163.117,164.3074
+Fox_assembly_Bradley,Delayed Morning Start,1,162.6635,163.4355
+Fox_assembly_Bradley,Delayed Morning Start,2,162.0594,165.4796
+Fox_assembly_Bradley,Delayed Morning Start,3,164.3897,167.8615
+Fox_assembly_Bradley,Delayed Morning Start,4,165.4444,168.7575
+Fox_assembly_Bradley,Delayed Morning Start,5,164.2497,167.9928
+Fox_assembly_Bradley,Delayed Morning Start,6,148.0449,154.1074
+Fox_assembly_Bradley,Delayed Morning Start,7,142.365,150.9753
+Fox_assembly_Bradley,Delayed Morning Start,8,142.2342,150.0123
+Fox_assembly_Bradley,Delayed Morning Start,9,146.6987,152.8613
+Fox_assembly_Bradley,Delayed Morning Start,10,150.2419,155.2708
+Fox_assembly_Bradley,Delayed Morning Start,11,150.9331,156.3773
+Fox_assembly_Bradley,Delayed Morning Start,12,151.4535,156.4282
+Fox_assembly_Bradley,Delayed Morning Start,13,153.4297,158.1146
+Fox_assembly_Bradley,Delayed Morning Start,14,155.4199,159.6422
+Fox_assembly_Bradley,Delayed Morning Start,15,155.3853,160.5449
+Fox_assembly_Bradley,Delayed Morning Start,16,154.1446,159.1727
+Fox_assembly_Bradley,Delayed Morning Start,17,156.3492,159.6879
+Fox_assembly_Bradley,Delayed Morning Start,18,159.346,160.2649
+Fox_assembly_Bradley,Delayed Morning Start,19,171.9438,172.1328
+Fox_assembly_Bradley,Delayed Morning Start,20,179.4389,180.3408
+Fox_assembly_Bradley,Delayed Morning Start,21,176.74,179.006
+Fox_assembly_Bradley,Delayed Morning Start,22,172.0441,176.7206
+Fox_assembly_Bradley,Delayed Morning Start,23,167.4868,172.8989
+Rat_office_Avis,Evening/Overnight Shutdown,0,841.0684,835.1877
+Rat_office_Avis,Evening/Overnight Shutdown,1,837.0419,837.0335
+Rat_office_Avis,Evening/Overnight Shutdown,2,835.7048,842.1337
+Rat_office_Avis,Evening/Overnight Shutdown,3,835.327,842.835
+Rat_office_Avis,Evening/Overnight Shutdown,4,835.3743,846.5104
+Rat_office_Avis,Evening/Overnight Shutdown,5,840.031,853.1818
+Rat_office_Avis,Evening/Overnight Shutdown,6,859.8332,874.7614
+Rat_office_Avis,Evening/Overnight Shutdown,7,890.1625,909.6303
+Rat_office_Avis,Evening/Overnight Shutdown,8,925.8964,948.4283
+Rat_office_Avis,Evening/Overnight Shutdown,9,961.1862,981.301
+Rat_office_Avis,Evening/Overnight Shutdown,10,969.1969,995.7583
+Rat_office_Avis,Evening/Overnight Shutdown,11,971.1754,998.0904
+Rat_office_Avis,Evening/Overnight Shutdown,12,966.5433,994.2365
+Rat_office_Avis,Evening/Overnight Shutdown,13,958.8027,987.9789
+Rat_office_Avis,Evening/Overnight Shutdown,14,954.0488,982.5628
+Rat_office_Avis,Evening/Overnight Shutdown,15,953.783,977.8087
+Rat_office_Avis,Evening/Overnight Shutdown,16,950.3985,973.3854
+Rat_office_Avis,Evening/Overnight Shutdown,17,921.853,949.5537
+Rat_office_Avis,Evening/Overnight Shutdown,18,889.6342,922.1762
+Rat_office_Avis,Evening/Overnight Shutdown,19,869.4536,904.4848
+Rat_office_Avis,Evening/Overnight Shutdown,20,861.3386,894.279
+Rat_office_Avis,Evening/Overnight Shutdown,21,849.5518,884.8325
+Rat_office_Avis,Evening/Overnight Shutdown,22,842.7103,881.2793
+Rat_office_Avis,Evening/Overnight Shutdown,23,836.3627,876.939
