@@ -29,13 +29,13 @@
 
 | 분류 | 기준 | 비고 |
 |------|------|------|
-| Quadrant A (Excellent) | EUI Score ≥ 50 AND Pattern Score ≥ 50 | `>=50` inclusive |
-| Quadrant B (Eff. but Irreg.) | EUI Score ≥ 50 AND Pattern Score < 50 | |
-| Quadrant C (Cons. but Ineff.) | EUI Score < 50 AND Pattern Score ≥ 50 | |
-| Quadrant D (Needs Impr.) | EUI Score < 50 AND Pattern Score < 50 | |
-| NORMAL | Pattern Score ≥ 50 (= Quadrant A + C) | |
-| CV_DRIVEN | Pattern Score < 50 AND Excess CVRMSE ≤ 5pp | |
-| ATYPICAL | Pattern Score < 50 AND Excess CVRMSE > 5pp | |
+| Quadrant A (Excellent) | As stored in CSV `quadrant_c14` column | Computed during evaluation |
+| Quadrant B (Eff. but Irreg.) | As stored in CSV `quadrant_c14` column | |
+| Quadrant C (Cons. but Ineff.) | As stored in CSV `quadrant_c14` column | |
+| Quadrant D (Needs Impr.) | As stored in CSV `quadrant_c14` column | |
+| NORMAL | As stored in CSV `l2_cause` column | |
+| CV_DRIVEN | As stored in CSV `l2_cause` column | |
+| ATYPICAL | As stored in CSV `l2_cause` column | |
 
 ---
 
@@ -55,7 +55,7 @@
 - **Source:** `cbecs2018_c14_median_evaluation.csv`, CBECS-mapped subset
 - **Columns:** `quadrant_c14`, `eui_score_c14`, `pattern_score`
 - **Computation:** `value_counts('quadrant_c14')`, `median('eui_score_c14')`, `median('pattern_score')` per quadrant
-- **Values:** A=122 (20.9%), B=107 (18.4%), C=250 (42.9%), D=104 (17.8%)
+- **Values:** Run `04_verify_all_claims.py` to compute current values
 
 ### Table 7. Quadrant by Building Type
 - **Source:** `cbecs2018_c14_median_evaluation.csv`, CBECS-mapped subset
@@ -67,14 +67,14 @@
 - **Source:** `cbecs2018_c14_median_evaluation.csv`, CBECS-mapped subset
 - **Columns:** `quadrant_c14`, `l2_cause`
 - **Computation:** `crosstab(quadrant_c14, l2_cause)`
-- **Values:** A=[122,0,0], B=[0,81,26], C=[250,0,0], D=[0,72,32]
-- **Note:** B/D have zero NORMAL buildings (verified: all pattern_score=50 buildings fall in A/C with >=50 threshold)
+- **Values:** Run `04_verify_all_claims.py` to compute current values
+- **Note:** Cross-tab values depend on threshold convention used in `quadrant_c14` column
 
 ### Table 9. NMBE by Level 2
 - **Source:** `cbecs2018_c14_median_evaluation.csv`, CBECS-mapped subset
 - **Columns:** `l2_cause`, `nmbe`
 - **Computation:** `groupby('l2_cause').agg(mean=abs(nmbe).mean, pct_over5=(abs(nmbe)>0.05).mean, median=abs(nmbe).median)`
-- **Values:** NORMAL: 0.76%/0.3%/0.55%, CV_DRIVEN: 1.41%/1.3%/1.11%, ATYPICAL: 5.29%/31.0%/2.68%
+- **Values:** Run `04_verify_all_claims.py` to compute current values
 
 ### Table 10. Level 3 NMBE Direction
 - **Source:** `cbecs2018_c14_median_evaluation.csv`, ATYPICAL subset (n=58)

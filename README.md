@@ -17,7 +17,7 @@ This repository contains the analysis pipeline that reproduces all results in th
 | Buildings analyzed | 611 (583 CBECS-mapped) |
 | Observation-prediction pairs | 9,247,992 |
 | EUI-CVRMSE correlation | r = -0.082 (R^2 = 0.007) |
-| ATYPICAL buildings | 58 (9.9% of CBECS-mapped) |
+| ATYPICAL buildings | 58 (9.9% of 583 CBECS-mapped) |
 | ENERGY STAR blind spot | 64.7% of certifiable buildings |
 
 ## Quick Start
@@ -27,7 +27,7 @@ This repository contains the analysis pipeline that reproduces all results in th
 ```bash
 pip install -r requirements.txt
 
-# Verify all 50 paper claims against CSV
+# Compute all paper values from CSV (source of truth)
 python scripts/04_verify_all_claims.py
 
 # Generate paper figures
@@ -57,7 +57,7 @@ scripts/
   01_run_inference.sh            Zero-shot inference (BuildingsBench)
   02_reproduce_paper.py          Full pipeline: predictions -> evaluation CSV
   03_generate_figures.py         Generate paper figures (PNG/PDF, 300 DPI)
-  04_verify_all_claims.py        Automated verification of 50 paper claims
+  04_verify_all_claims.py        Compute all paper values from CSV (no hardcoding)
   05_analyze_hourly_patterns.py  Table 12: best-practice building patterns
   06_threshold_justification.py  5pp threshold statistical evidence
 
@@ -84,7 +84,7 @@ predictions CSV (9.2M rows, ~1.4 GB)
 [02] Per-building metrics (CVRMSE, NMBE, CV)
   -> EUI Score (CBECS 2018 Table C14 z-score -> normal CDF)
   -> Pattern Score (within-type CVRMSE z-score -> normal CDF)
-  -> Level 1: Quadrant classification (EUI Score >= 50, Pattern Score >= 50)
+  -> Level 1: Quadrant classification (threshold from CSV quadrant_c14 column)
   -> Level 2: CVRMSE decomposition (Excess CVRMSE > 5pp -> ATYPICAL)
   -> Level 3: NMBE direction (>+2% OVER, <-2% UNDER)
     |
@@ -104,7 +104,7 @@ evaluation CSV (611 rows) -> [03] figures, [04] verification
 
 | Parameter | Value | Justification |
 |-----------|-------|---------------|
-| Pattern Score threshold | >= 50 (inclusive) | Standard percentile convention |
+| Pattern Score threshold | as defined in CSV `quadrant_c14` | Score = 50 means at median (baseline) |
 | Excess CVRMSE threshold | 5 pp | IQR fence (11.6 pp), Cohen's d = 1.22, min n = 10 |
 | NMBE direction threshold | +/- 2% | Conservative ASHRAE Guideline 14 criterion |
 | Low-load exclusion | mean < 5 kWh/hr | Denominator inflation prevention |
@@ -112,23 +112,21 @@ evaluation CSV (611 rows) -> [03] figures, [04] verification
 
 ## Verification
 
-Running `04_verify_all_claims.py` checks 50 quantitative claims from the paper:
+Running `04_verify_all_claims.py` computes all paper values directly from the CSV:
 
-- Quadrant distribution (4 counts)
-- Level 2 classification (3 counts)
-- Level 2 x Quadrant cross-tab (4 cells)
-- Correlation coefficients (2 values)
-- CV-CVRMSE regression (slope, intercept, R^2)
-- NMBE statistics by group (6 values)
-- Mann-Whitney U test (U statistic, p-value)
-- NMBE direction counts (3 values)
-- ENERGY STAR reversal (3 values)
-- Reversal case counts (4 values)
-- CVRMSE by building type (6 means)
-- Causal decomposition (4 counts)
-- Best-practice candidates (2 counts)
+- Quadrant distribution (Table 6)
+- Level 2 classification and cross-tab (Table 8)
+- Correlation coefficients and regression
+- NMBE statistics by group (Table 9)
+- Mann-Whitney U test
+- NMBE direction (Table 10)
+- ENERGY STAR reversal analysis
+- Reversal case counts (Table 11)
+- CVRMSE by building type (Table 4)
+- Causal decomposition (Table 5)
+- Best-practice candidates (Table 12)
 
-**All 50 checks: PASSED**
+**No hardcoded expected values.** The script output IS the source of truth for all paper numbers.
 
 ## License
 
