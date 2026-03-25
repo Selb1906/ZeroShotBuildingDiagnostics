@@ -95,7 +95,7 @@ def fig5_scatter(cbecs):
     ax.legend(loc='lower right', framealpha=0.9, markerscale=1.5)
     ax.set_title('Figure 5. EUI Score vs. Pattern Score (n=583 CBECS-mapped buildings)')
 
-    save_fig(fig, 'fig5_scatter')
+    save_fig(fig, 'fig2_scatter')
     plt.close(fig)
 
 
@@ -291,9 +291,9 @@ def fig3_cv_cvrmse_regression(df, cbecs):
     ax.set_xlim(0, min(df['cv'].quantile(0.99) * 1.1, 2.0))
     ax.set_ylim(0, min(df['cvrmse'].quantile(0.99) * 100 * 1.1, 80))
     ax.legend(loc='upper left', fontsize=6, framealpha=0.9)
-    ax.set_title('Figure 3. CVRMSE Decomposition: CV-driven vs. ATYPICAL')
+    ax.set_title('CVRMSE Decomposition: CV-driven vs. ATYPICAL')
 
-    save_fig(fig, 'fig3_cv_cvrmse_regression')
+    save_fig(fig, 'fig3_cv_cvrmse')
     plt.close(fig)
 
 
@@ -317,27 +317,40 @@ PATTERNS = {
 }
 
 PREDICTIONS_CSV = 'results/predictions_TransformerWithGaussian-L_bdg2_raw.csv'
+HOURLY_CSV = 'results/best_practice_hourly_residuals.csv'
 
 
 def fig4_hourly_patterns():
-    if not os.path.exists(PREDICTIONS_CSV):
-        print(f'  Skipping fig4: {PREDICTIONS_CSV} not found')
+    # Try pre-extracted CSV first (7KB), fall back to full predictions (1.4GB)
+    if os.path.exists(HOURLY_CSV):
+        hourly_data = pd.read_csv(HOURLY_CSV)
+        source = HOURLY_CSV
+    elif os.path.exists(PREDICTIONS_CSV):
+        pred = pd.read_csv(PREDICTIONS_CSV)
+        rows = []
+        for bid in BEST_PRACTICE:
+            g = pred[pred['building'] == bid].copy()
+            g['residual'] = g['actual'] - g['predicted']
+            for hour, val in g.groupby('hour')['residual'].mean().items():
+                rows.append({'building': bid, 'hour': hour, 'mean_residual_kwh': val})
+        hourly_data = pd.DataFrame(rows)
+        source = PREDICTIONS_CSV
+    else:
+        print(f'  Skipping fig4: neither {HOURLY_CSV} nor {PREDICTIONS_CSV} found')
         return
 
-    pred = pd.read_csv(PREDICTIONS_CSV)
+    print(f'  Fig4 source: {source}')
     fig, axes = plt.subplots(1, 3, figsize=(FIG_WIDTH_DOUBLE, 3.2), sharey=True)
 
     pattern_colors = ['#2563EB', '#059669', '#DC2626']
 
     for ax, (pattern_name, buildings), pcolor in zip(axes, PATTERNS.items(), pattern_colors):
         for bid in buildings:
-            g = pred[pred['building'] == bid].copy()
-            if len(g) == 0:
+            bdata = hourly_data[hourly_data['building'] == bid]
+            if len(bdata) == 0:
                 continue
-            g['residual'] = g['actual'] - g['predicted']
-            hourly = g.groupby('hour')['residual'].mean()
             short_name = bid.split('_')[-1]
-            ax.plot(hourly.index, hourly.values, alpha=0.7, linewidth=1.2, label=short_name)
+            ax.plot(bdata['hour'], bdata['mean_residual_kwh'], alpha=0.7, linewidth=1.2, label=short_name)
 
         ax.axhline(y=0, color='gray', linewidth=0.5, linestyle='-')
         ax.set_title(pattern_name, fontsize=7, fontweight='bold')
@@ -355,7 +368,7 @@ def fig4_hourly_patterns():
             ax.axvspan(0, 6, alpha=0.05, color=pcolor)
 
     axes[0].set_ylabel('Mean Residual\n(actual - predicted, kWh)', fontsize=7)
-    fig.suptitle('Figure 4. Hourly Residual Patterns of Best-Practice Buildings', fontsize=9, y=1.02)
+    fig.suptitle('Hourly Residual Patterns of Best-Practice Buildings', fontsize=9, y=1.02)
     fig.tight_layout()
 
     save_fig(fig, 'fig4_hourly_patterns')
@@ -381,18 +394,20 @@ def main():
     print()
 
     print('Generating figures...')
-    fig5_scatter(cbecs)         # Figure 2 in paper
-    fig3_cv_cvrmse_regression(df, cbecs)  # Figure 3 in paper
-    fig4_hourly_patterns()      # Figure 4 in paper
+    fig3_cv_cvrmse_regression(df, cbecs)
+    fig4_hourly_patterns()
+
+    # Figure 2 (scatter) last — it's the most important
+    fig5_scatter(cbecs)
 
     print()
     print('Done! Figures saved to figures/')
     print()
     print('Paper figure mapping:')
     print('  Figure 1: Framework flowchart (manual, not generated here)')
-    print('  Figure 2: fig5_scatter.png (EUI Score vs Pattern Score)')
-    print('  Figure 3: fig3_cv_cvrmse_regression.png (CV vs CVRMSE + 5pp)')
-    print('  Figure 4: fig4_hourly_patterns.png (best-practice hourly)')
+    print('  Figure 2: fig2_scatter.png')
+    print('  Figure 3: fig3_cv_cvrmse.png')
+    print('  Figure 4: fig4_hourly_patterns.png')
 
 
 if __name__ == '__main__':
