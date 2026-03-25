@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+*.egg-info/
+figures/
+*.png
+*.pdf
+results/*_reproduced.csv
+results/paper_tables.txt
+results/hourly_patterns/
