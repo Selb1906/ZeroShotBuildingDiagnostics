@@ -160,7 +160,7 @@ def fig8_nmbe(cbecs):
     fig, ax = plt.subplots(figsize=(FIG_WIDTH_SINGLE * 1.5, 3.5))
 
     categories = ['NORMAL', 'CV_DRIVEN', 'ATYPICAL']
-    labels = ['NORMAL\n(Pattern > 50)', 'CV_DRIVEN\n(Excess ≤ 5pp)', 'ATYPICAL\n(Excess > 5pp)']
+    labels = ['NORMAL\n(Pattern >= 50)', 'CV_DRIVEN\n(Excess <= 5pp)', 'ATYPICAL\n(Excess > 5pp)']
     colors = [COLORS['NORMAL'], COLORS['CV_DRIVEN'], COLORS['ATYPICAL']]
 
     means = []
