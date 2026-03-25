@@ -95,7 +95,7 @@ def fig5_scatter(cbecs):
     ax.legend(loc='lower right', framealpha=0.9, markerscale=1.5)
     ax.set_title('EUI Score vs. Pattern Score (n=583 CBECS-mapped buildings)')
 
-    save_fig(fig, 'fig2_scatter')
+    save_fig(fig, 'fig3_scatter')
     plt.close(fig)
 
 
@@ -293,7 +293,7 @@ def fig3_cv_cvrmse_regression(df, cbecs):
     ax.legend(loc='upper left', fontsize=6, framealpha=0.9)
     ax.set_title('CVRMSE Decomposition: CV-driven vs. ATYPICAL')
 
-    save_fig(fig, 'fig3_cv_cvrmse')
+    save_fig(fig, 'fig2_cv_cvrmse')
     plt.close(fig)
 
 
@@ -378,8 +378,8 @@ def main():
     print()
     print('Paper figure mapping:')
     print('  Figure 1: Framework flowchart (manual, not generated here)')
-    print('  Figure 2: fig2_scatter.png')
-    print('  Figure 3: fig3_cv_cvrmse.png')
+    print('  Figure 2: fig2_cv_cvrmse.png')
+    print('  Figure 3: fig3_scatter.png')
     print('  Figure 4: fig4_hourly_patterns.png')
 
 
