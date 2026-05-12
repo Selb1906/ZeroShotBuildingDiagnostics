@@ -1,0 +1,13 @@
+# Table E1: Regression Parameters per Fold
+fold,n_train,n_test,alpha,beta,R2_train,R2_test
+Hold-out Bear,520,91,0.5409,-0.0342,0.7067,0.6338
+Hold-out Fox,476,135,0.4745,-0.0054,0.6984,0.6787
+Hold-out Rat,331,280,0.6132,-0.0454,0.6977,0.6417
+Hold-out Panther,506,105,0.5592,-0.0391,0.7125,0.4849
+
+# Table E2: Classification Agreement per Fold
+fold,n_test_cbecs,ATYPICAL_fold,ATYPICAL_baseline,agreement_pct,cohen_kappa
+Hold-out Bear,85,14,14,100.0,1.0
+Hold-out Fox,131,7,8,95.4,0.895
+Hold-out Rat,275,21,23,85.5,0.743
+Hold-out Panther,92,11,13,95.7,0.893
