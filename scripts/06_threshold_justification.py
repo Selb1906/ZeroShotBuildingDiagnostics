@@ -53,12 +53,15 @@ print(f'  Adjusted fence (skew-corrected): {fence_adjusted:.1f} pp')
 print(f'  Both fences > 5 pp: standard={fence_standard:.1f}, adjusted={fence_adjusted:.1f}')
 
 # ── 2. Cohen's d Effect Size ──
-print('\n--- 2. Cohen d Effect Size for NMBE Separation ---')
-print(f'  Testing: at what threshold does |NMBE| differ between groups?')
+# Only compare within Pattern Score < 50 (B/D quadrants)
+# These are the buildings where Level 2 decomposition applies
+bd = cbecs[cbecs['pattern_score'] < 50]
+print(f'\n--- 2. Cohen d Effect Size for NMBE Separation (Pattern Score < 50, n={len(bd)}) ---')
+print(f'  Comparing ATYPICAL (excess > threshold) vs CV_DRIVEN (excess <= threshold)')
 print()
 for threshold in [3, 4, 5, 6, 7, 8]:
-    below = cbecs[cbecs['excess_cvrmse'] * 100 <= threshold]['nmbe'].abs()
-    above = cbecs[cbecs['excess_cvrmse'] * 100 > threshold]['nmbe'].abs()
+    below = bd[bd['excess_cvrmse'] * 100 <= threshold]['nmbe'].abs()
+    above = bd[bd['excess_cvrmse'] * 100 > threshold]['nmbe'].abs()
     if len(above) < 5:
         continue
     pooled_std = np.sqrt(((len(below) - 1) * below.std()**2 + (len(above) - 1) * above.std()**2) /
@@ -72,7 +75,7 @@ for threshold in [3, 4, 5, 6, 7, 8]:
 # ── 3. Minimum n for Level 3 ──
 print('\n--- 3. Minimum n >= 10 in Level 3 Subcategories ---')
 for threshold in [3, 4, 5, 6, 7, 8]:
-    atypical = cbecs[cbecs['excess_cvrmse'] * 100 > threshold]
+    atypical = bd[bd['excess_cvrmse'] * 100 > threshold]
     n_over = len(atypical[atypical['nmbe'] > 0.02])
     n_under = len(atypical[atypical['nmbe'] < -0.02])
     n_neutral = len(atypical[(atypical['nmbe'] >= -0.02) & (atypical['nmbe'] <= 0.02)])
