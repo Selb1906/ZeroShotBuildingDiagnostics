@@ -275,8 +275,9 @@ def fig3_cv_cvrmse_regression(df, cbecs):
     # Regression line
     cv_range = np.linspace(0, df['cv'].max() * 1.05, 100)
     expected = (slope * cv_range + intercept) * 100
+    sign = '+' if intercept >= 0 else '−'
     ax.plot(cv_range, expected, 'k-', linewidth=1.5,
-            label=f'Regression: CVRMSE = {slope:.3f}×CV + {intercept:.3f}\n(R$^2$ = {r_val**2:.3f})')
+            label=f'Regression: CVRMSE = {slope:.3f}×CV {sign} {abs(intercept):.3f}\n(R$^2$ = {r_val**2:.3f})')
 
     # 5pp boundary (expected + 5pp)
     boundary = expected + 5
