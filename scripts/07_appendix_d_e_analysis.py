@@ -412,8 +412,7 @@ def plot_cohens_d(df_1a: pd.DataFrame, out_dir: str):
 
     ax.set_xlabel("Excess CVRMSE Threshold (percentage points)", fontsize=11)
     ax.set_ylabel("Cohen's d  (|NMBE|: ATYPICAL vs CV-Driven)", fontsize=11)
-    ax.set_title("Figure D1: Effect Size vs. Excess CVRMSE Threshold\n"
-                 "(CBECS-mapped buildings, pattern_score < 50)", fontsize=11)
+    # MDPI policy: no figure number/caption embedded in image
     ax.legend(fontsize=9)
     ax.set_xticks(thresholds)
     ax.yaxis.set_minor_locator(mticker.MultipleLocator(0.1))
